@@ -11,24 +11,6 @@ AnnouncerManager*	ANNOUNCER = NULL; // global and accessible from anywhere in ou
 const RString EMPTY_ANNOUNCER_NAME = "Empty";
 const RString ANNOUNCERS_DIR  = "Announcers/";
 
-AnnouncerManager::AnnouncerManager()
-{
-	// Register with Lua.
-	{
-		Lua *L = LUA->Get();
-		lua_pushstring( L, "ANNOUNCER" );
-		this->PushSelf( L );
-		lua_settable( L, LUA_GLOBALSINDEX );
-		LUA->Release( L );
-	}
-}
-
-AnnouncerManager::~AnnouncerManager()
-{
-	// Unregister with Lua.
-	LUA->UnsetGlobal( "ANNOUNCER" );
-}
-
 void AnnouncerManager::GetAnnouncerNames( vector<RString>& AddTo )
 {
 	GetDirListing( ANNOUNCERS_DIR+"*", AddTo, true );
@@ -176,50 +158,7 @@ void AnnouncerManager::NextAnnouncer()
 		}
 	}
 }
-// lua start
-#include "LuaBinding.h"
-
-/** @brief Allow Lua to have access to the AnnouncerManager. */
-class LunaAnnouncerManager: public Luna<AnnouncerManager>
-{
-public:
-	static int DoesAnnouncerExist( T* p, lua_State *L ) { lua_pushboolean(L, p->DoesAnnouncerExist( SArg(1) )); return 1; }
-	static int GetAnnouncerNames( T* p, lua_State *L )
-	{
-		vector<RString> vAnnouncers;
-		p->GetAnnouncerNames( vAnnouncers );
-		LuaHelpers::CreateTableFromArray(vAnnouncers, L);
-		return 1;
-	}
-	static int GetCurrentAnnouncer( T* p, lua_State *L )
-	{
-		RString s = p->GetCurAnnouncerName();
-		if( s.empty() )
-			return 0;
-		lua_pushstring(L, s );
-		return 1;
-	}
-	static int SetCurrentAnnouncer( T* p, lua_State *L )
-	{
-		RString s = SArg(1);
-		// only bother switching if the announcer exists. -aj
-		if(p->DoesAnnouncerExist(s))
-			p->SwitchAnnouncer(s);
-		return 0;
-	}
-
-	LunaAnnouncerManager()
-	{
-		ADD_METHOD( DoesAnnouncerExist );
-		ADD_METHOD( GetAnnouncerNames );
-		ADD_METHOD( GetCurrentAnnouncer );
-		ADD_METHOD( SetCurrentAnnouncer );
-	}
-};
-
-LUA_REGISTER_CLASS( AnnouncerManager )
-// lua end
-
+ 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.

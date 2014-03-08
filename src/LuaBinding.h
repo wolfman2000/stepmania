@@ -196,8 +196,7 @@ namespace LuaHelpers { \
 			Luna##T::PushSelf( L, obj );\
 		}\
 	}\
-}\
-static Luna##T registera##T
+}
 
 #define LUNA_FILE_TEMPLATE(T) \
 template<> void Luna<T>::PushObject( Lua *L, const RString &derivedName, T* p ) { \
@@ -206,6 +205,18 @@ template<> void Luna<T>::PushObject( Lua *L, const RString &derivedName, T* p ) 
 	LuaBinding::ApplyDerivedType( L, derivedName, p ); \
 } \
 LUNA_FILE_TEMPLATE_BASIC(T, T)
+
+#define LUNA_FILE_ALLOW_GLOBAL(T, P, N) \
+void AddGlobalToLua() { \
+	Lua *L = LUA->Get(); \
+	lua_pushstring(L, #N); \
+	T::PushSelf(L, P); \
+	lua_settable(L, LUA_GLOBALSINDEX); \
+	LUA->gitRelease(L); \
+}\
+void RemoveGlobalFromLua() {\
+	LUA->UnsetGlobal(#N); \
+}
 
 #endif
 

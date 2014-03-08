@@ -6,8 +6,6 @@
 class AnnouncerManager
 {
 public:
-	AnnouncerManager();
-	~AnnouncerManager();
 
 	/**
 	 * @brief Retrieve the announcer names.
@@ -30,9 +28,6 @@ public:
 
 	RString GetPathTo( RString sFolderName );
 	bool HasSoundsFor( RString sFolderName );
-
-	// Lua
-	void PushSelf( lua_State *L );
 
 protected:
 	static RString GetAnnouncerDirFromName( RString sAnnouncerName );

@@ -495,9 +495,6 @@
     <ClCompile Include="Steps.cpp">
       <Filter>Data Structures</Filter>
     </ClCompile>
-    <ClCompile Include="LunaSteps.cpp">
-      <Filter>Data Structures</Filter>
-    </ClCompile>
     <ClCompile Include="StepsUtil.cpp">
       <Filter>Data Structures</Filter>
     </ClCompile>
@@ -611,6 +608,15 @@
     </ClCompile>
     <ClCompile Include="ScoreKeeperShared.cpp">
       <Filter>Data Structures\ScoreKeeper</Filter>
+    </ClCompile>
+    <ClCompile Include="LunaAssistant.cpp">
+      <Filter>Luna Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="LunaAnnouncerManager.cpp">
+      <Filter>Luna Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="LunaSteps.cpp">
+      <Filter>Luna Helpers</Filter>
     </ClCompile>
     <ClCompile Include="IniFile.cpp">
       <Filter>File Types</Filter>
@@ -2003,9 +2009,6 @@
     <ClInclude Include="Steps.h">
       <Filter>Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="LunaSteps.h">
-      <Filter>Data Structures</Filter>
-    </ClInclude>
     <ClInclude Include="StepsUtil.h">
       <Filter>Data Structures</Filter>
     </ClInclude>
@@ -2125,6 +2128,15 @@
     </ClInclude>
     <ClInclude Include="ScoreKeeperShared.h">
       <Filter>Data Structures\ScoreKeeper</Filter>
+    </ClInclude>
+    <ClInclude Include="LunaAssistant.h">
+      <Filter>Luna Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="LunaAnnouncerManager.h">
+      <Filter>Luna Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="LunaSteps.h">
+      <Filter>Luna Helpers</Filter>
     </ClInclude>
     <ClInclude Include="IniFile.h">
       <Filter>File Types</Filter>

@@ -1493,14 +1493,6 @@
 				>
 			</File>
 			<File
-				RelativePath="LunaSteps.cpp"
-				>
-			</File>
-			<File
-				RelativePath="LunaSteps.h"
-				>
-			</File>
-			<File
 				RelativePath="StepsUtil.cpp"
 				>
 			</File>
@@ -1876,6 +1868,14 @@
 				RelativePath="XmlFileUtil.h"
 				>
 			</File>
+		</Filter>
+		<Filter Name="LunaHelpers">
+			<File RelativePath="LunaAssistant.cpp" />
+			<File RelativePath="LunaAssistant.h" />
+			<File RelativePath="LunaAnnouncerManager.cpp" />
+			<File RelativePath="LunaAnnouncerManager.h" />
+			<File RelativePath="LunaSteps.cpp" />
+			<File RelativePath="LunaSteps.h" />
 		</Filter>
 		<Filter
 			Name="StepMania"

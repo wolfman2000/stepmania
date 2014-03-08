@@ -46,7 +46,7 @@
 #include "ProfileManager.h"
 #include "MemoryCardManager.h"
 #include "ScreenManager.h"
-#include "LuaManager.h"
+#include "LuaBinding.h"
 #include "GameManager.h"
 #include "FontManager.h"
 #include "InputFilter.h"
@@ -67,6 +67,9 @@
 #include "GameLoop.h"
 #include "SpecialFiles.h"
 #include "Profile.h"
+
+// Helper file for Luna.
+#include "LunaAssistant.h"
 
 #if defined(WIN32)
 #include <windows.h>
@@ -268,6 +271,8 @@ void StepMania::ResetPreferences()
  * these may still be NULL. */
 void ShutdownGame()
 {
+    LunaAssistant::RemoveLunaTypes();
+	
 	/* First, tell SOUNDMAN that we're shutting down. This signals sound drivers to
 	 * stop sounds, which we want to do before any threads that may have started sounds
 	 * are closed; this prevents annoying DirectSound glitches and delays. */
@@ -1165,6 +1170,8 @@ int main(int argc, char* argv[])
 	FONT		= new FontManager;
 	SCREENMAN	= new ScreenManager;
 
+    LunaAssistant::CreateLunaTypes();
+	
 	StepMania::ResetGame();
 
 	/* Now that GAMESTATE is reset, tell SCREENMAN to update the theme (load

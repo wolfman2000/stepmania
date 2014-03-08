@@ -35,6 +35,14 @@
 		2B05F50F18C9821C0087939F /* LunaSteps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B05F50C18C9821C0087939F /* LunaSteps.cpp */; };
 		2B05F51018C9821C0087939F /* LunaSteps.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B05F50D18C9821C0087939F /* LunaSteps.h */; };
 		2B05F51118C9821C0087939F /* LunaSteps.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B05F50D18C9821C0087939F /* LunaSteps.h */; };
+		2B05F51418CB52100087939F /* LunaAnnouncerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B05F51218CB52100087939F /* LunaAnnouncerManager.cpp */; };
+		2B05F51518CB52100087939F /* LunaAnnouncerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B05F51218CB52100087939F /* LunaAnnouncerManager.cpp */; };
+		2B05F51618CB52100087939F /* LunaAnnouncerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B05F51318CB52100087939F /* LunaAnnouncerManager.h */; };
+		2B05F51718CB52100087939F /* LunaAnnouncerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B05F51318CB52100087939F /* LunaAnnouncerManager.h */; };
+		2B05F51A18CB67FC0087939F /* LunaAssistant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B05F51818CB67FC0087939F /* LunaAssistant.cpp */; };
+		2B05F51B18CB67FC0087939F /* LunaAssistant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B05F51818CB67FC0087939F /* LunaAssistant.cpp */; };
+		2B05F51C18CB67FC0087939F /* LunaAssistant.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B05F51918CB67FC0087939F /* LunaAssistant.h */; };
+		2B05F51D18CB67FC0087939F /* LunaAssistant.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B05F51918CB67FC0087939F /* LunaAssistant.h */; };
 		2B17AB7713980FF6001AE57D /* png.c in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6130D13773C8E00CC8BBD /* png.c */; };
 		2B17AB7813980FF6001AE57D /* png.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BC6130E13773C8E00CC8BBD /* png.h */; };
 		2B17AB7913980FF6001AE57D /* pngconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BC6130F13773C8E00CC8BBD /* pngconf.h */; };
@@ -1923,6 +1931,10 @@
 		2B01A79516C881E500D5CFD2 /* RageDisplay_OGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RageDisplay_OGL.h; path = ../src/RageDisplay_OGL.h; sourceTree = "<group>"; };
 		2B05F50C18C9821C0087939F /* LunaSteps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LunaSteps.cpp; path = ../src/LunaSteps.cpp; sourceTree = "<group>"; };
 		2B05F50D18C9821C0087939F /* LunaSteps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LunaSteps.h; path = ../src/LunaSteps.h; sourceTree = "<group>"; };
+		2B05F51218CB52100087939F /* LunaAnnouncerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LunaAnnouncerManager.cpp; path = ../src/LunaAnnouncerManager.cpp; sourceTree = "<group>"; };
+		2B05F51318CB52100087939F /* LunaAnnouncerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LunaAnnouncerManager.h; path = ../src/LunaAnnouncerManager.h; sourceTree = "<group>"; };
+		2B05F51818CB67FC0087939F /* LunaAssistant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LunaAssistant.cpp; path = ../src/LunaAssistant.cpp; sourceTree = "<group>"; };
+		2B05F51918CB67FC0087939F /* LunaAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LunaAssistant.h; path = ../src/LunaAssistant.h; sourceTree = "<group>"; };
 		2B17AB7213980FDF001AE57D /* libpng-1.5.1-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpng-1.5.1-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B17ABC013981521001AE57D /* libglew-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libglew-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B17ABE013981756001AE57D /* libpcre-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpcre-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3464,6 +3476,7 @@
 				AA6EFDC804770AF1005F316C /* DataStructures */,
 				AA6EFE5704770C7E005F316C /* FileTypes */,
 				AA6E00FE047711FF005F316C /* GlobalSingletons */,
+				2B05F51E18CB69690087939F /* LunaHelpers */,
 				2B766980132FF62B00586512 /* NoteParsing */,
 				29B97315FDCFA39411CA2CEA /* Other Source */,
 				AA6EFDBB04770A83005F316C /* Rage */,
@@ -3512,6 +3525,19 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2B05F51E18CB69690087939F /* LunaHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				2B05F51818CB67FC0087939F /* LunaAssistant.cpp */,
+				2B05F51918CB67FC0087939F /* LunaAssistant.h */,
+				2B05F51218CB52100087939F /* LunaAnnouncerManager.cpp */,
+				2B05F51318CB52100087939F /* LunaAnnouncerManager.h */,
+				2B05F50C18C9821C0087939F /* LunaSteps.cpp */,
+				2B05F50D18C9821C0087939F /* LunaSteps.h */,
+			);
+			name = LunaHelpers;
 			sourceTree = "<group>";
 		};
 		2B766980132FF62B00586512 /* NoteParsing */ = {
@@ -4261,8 +4287,6 @@
 				AA6EFE0A04770C79005F316C /* StageStats.h */,
 				AAF430FD04DC98BC00D02EE9 /* Steps.cpp */,
 				AAF430FE04DC98BC00D02EE9 /* Steps.h */,
-				2B05F50C18C9821C0087939F /* LunaSteps.cpp */,
-				2B05F50D18C9821C0087939F /* LunaSteps.h */,
 				AA5C73FB0637A5F000AFB891 /* StepsUtil.cpp */,
 				AA5C73FC0637A5F000AFB891 /* StepsUtil.h */,
 				AA139C4606923EBE00C1F6ED /* Style.cpp */,
@@ -5497,6 +5521,8 @@
 				2B01A79816C881E500D5CFD2 /* RageDisplay_OGL_Helpers.h in Headers */,
 				2B01A79C16C881E500D5CFD2 /* RageDisplay_OGL.h in Headers */,
 				2B05F51018C9821C0087939F /* LunaSteps.h in Headers */,
+				2B05F51618CB52100087939F /* LunaAnnouncerManager.h in Headers */,
+				2B05F51C18CB67FC0087939F /* LunaAssistant.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5905,6 +5931,8 @@
 				2B01A79916C881E500D5CFD2 /* RageDisplay_OGL_Helpers.h in Headers */,
 				2B01A79D16C881E500D5CFD2 /* RageDisplay_OGL.h in Headers */,
 				2B05F51118C9821C0087939F /* LunaSteps.h in Headers */,
+				2B05F51718CB52100087939F /* LunaAnnouncerManager.h in Headers */,
+				2B05F51D18CB67FC0087939F /* LunaAssistant.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6906,6 +6934,8 @@
 				2B01A79616C881E500D5CFD2 /* RageDisplay_OGL_Helpers.cpp in Sources */,
 				2B01A79A16C881E500D5CFD2 /* RageDisplay_OGL.cpp in Sources */,
 				2B05F50E18C9821C0087939F /* LunaSteps.cpp in Sources */,
+				2B05F51418CB52100087939F /* LunaAnnouncerManager.cpp in Sources */,
+				2B05F51A18CB67FC0087939F /* LunaAssistant.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7297,6 +7327,8 @@
 				2B01A79716C881E500D5CFD2 /* RageDisplay_OGL_Helpers.cpp in Sources */,
 				2B01A79B16C881E500D5CFD2 /* RageDisplay_OGL.cpp in Sources */,
 				2B05F50F18C9821C0087939F /* LunaSteps.cpp in Sources */,
+				2B05F51518CB52100087939F /* LunaAnnouncerManager.cpp in Sources */,
+				2B05F51B18CB67FC0087939F /* LunaAssistant.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

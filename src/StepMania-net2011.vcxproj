@@ -508,6 +508,8 @@ cl /Zl /nologo /c verstub.cpp /Fo"$(IntDir)"</Command>
     <ClCompile Include="StageStats.cpp" />
     <ClCompile Include="Steps.cpp" />
     <ClCompile Include="LunaSteps.cpp" />
+    <ClCompile Include="LunaAnnouncerManager.cpp" />
+    <ClCompile Include="LunaAssistant.cpp" />
     <ClCompile Include="StepsUtil.cpp" />
     <ClCompile Include="Style.cpp" />
     <ClCompile Include="StyleUtil.cpp" />
@@ -1824,6 +1826,8 @@ cl /Zl /nologo /c verstub.cpp /Fo"$(IntDir)"</Command>
     <ClInclude Include="StageStats.h" />
     <ClInclude Include="Steps.h" />
     <ClInclude Include="LunaSteps.h" />
+    <ClInclude Include="LunaAnnouncerManager.h" />
+    <ClInclude Include="LunaAssistant.h" />
     <ClInclude Include="StepsUtil.h" />
     <ClInclude Include="Style.h" />
     <ClInclude Include="StyleUtil.h" />

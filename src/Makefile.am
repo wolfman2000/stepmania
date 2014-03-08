@@ -185,7 +185,6 @@ ScoreKeeperRave.cpp ScoreKeeperRave.h \
 ScoreKeeperShared.cpp ScoreKeeperShared.h \
 Song.cpp Song.h SongCacheIndex.cpp SongCacheIndex.h \
 SongOptions.cpp SongOptions.h SongUtil.cpp SongUtil.h StageStats.cpp StageStats.h Steps.cpp Steps.h \
-LunaSteps.cpp LunaSteps.h \
 SoundEffectControl.cpp SoundEffectControl.h \
 StepsUtil.cpp StepsUtil.h Style.cpp Style.h StyleUtil.cpp StyleUtil.h \
 SubscriptionManager.h \
@@ -592,6 +591,11 @@ if !WITHOUT_NETWORKING
  GlobalSingletons += ezsockets.cpp ezsockets.h
 endif
 
+LunaHelpers = \
+LunaAssistant.cpp LunaAssistant.h \
+LunaAnnouncerManager.cpp LunaAnnouncerManager.h \
+LunaSteps.cpp LunaSteps.h
+
 libtommath_a_SOURCES = \
 libtommath/bncore.c libtommath/bn_mp_init.c libtommath/bn_mp_clear.c libtommath/bn_mp_exch.c libtommath/bn_mp_grow.c libtommath/bn_mp_shrink.c \
 libtommath/bn_mp_clamp.c libtommath/bn_mp_zero.c  libtommath/bn_mp_set.c libtommath/bn_mp_set_int.c libtommath/bn_mp_init_size.c libtommath/bn_mp_copy.c \
@@ -717,7 +721,8 @@ main_SOURCES = $(Screens) \
 		$(ActorsInGameplay) \
 		$(Rage) \
 		$(Actors) \
-		$(GlobalSingletons)
+		$(GlobalSingletons) \
+		$(LunaHelpers)
 
 if !WITHOUT_GLES2
  main_SOURCES += RageDisplay_GLES2.cpp RageDisplay_GLES2.h
