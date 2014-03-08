@@ -1,27 +1,9 @@
-#include "LunaAssistant.h"
-
-#include "LunaAnnouncerManager.h"
-#include "LunaSteps.h"
 #include "LunaGameState.h"
 
-namespace LunaAssistant {
-	static LunaSteps registerALunaSteps;
-	static LunaAnnouncerManager registerALunaAnnouncerManager;
-    static LunaGameState registerALunaGameState;
-
-	void CreateLunaTypes() {
-		registerALunaAnnouncerManager.AddGlobalToLua();
-        registerALunaGameState.AddGlobalToLua();
-	}
-
-	void RemoveLunaTypes() {
-		registerALunaAnnouncerManager.RemoveGlobalFromLua();
-        registerALunaGameState.RemoveGlobalFromLua();
-	}
-}
+LUNA_FILE_TEMPLATE(GameState);
 
 /*
- * (c) 2014 Jason Felds
+ * (c) 2001-2014 Chris Danford, Glenn Maynard, Chris Gomez
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a

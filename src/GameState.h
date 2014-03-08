@@ -20,7 +20,6 @@
 class Character;
 class Course;
 struct Game;
-struct lua_State;
 class LuaTable;
 class PlayerState;
 class PlayerOptions;
@@ -384,9 +383,6 @@ public:
 	bool IsGoalComplete( PlayerNumber pn )	{ return GetGoalPercentComplete( pn ) >= 1; }
 
 	bool m_bDopefish;
-
-	// Lua
-	void PushSelf( lua_State *L );
 
 	// Keep extra stage logic internal to GameState.
 private:

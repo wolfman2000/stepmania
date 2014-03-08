@@ -615,6 +615,9 @@
     <ClCompile Include="LunaAnnouncerManager.cpp">
       <Filter>Luna Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="LunaGameState.cpp">
+      <Filter>Luna Helpers</Filter>
+    </ClCompile>
     <ClCompile Include="LunaSteps.cpp">
       <Filter>Luna Helpers</Filter>
     </ClCompile>
@@ -2135,6 +2138,7 @@
     <ClInclude Include="LunaAnnouncerManager.h">
       <Filter>Luna Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="LunaGameState.h"><Filter>Luna Helpers</Filter></ClInclude>
     <ClInclude Include="LunaSteps.h">
       <Filter>Luna Helpers</Filter>
     </ClInclude>

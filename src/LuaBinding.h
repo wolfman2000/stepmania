@@ -212,7 +212,7 @@ void AddGlobalToLua() { \
 	lua_pushstring(L, #N); \
 	T::PushSelf(L, P); \
 	lua_settable(L, LUA_GLOBALSINDEX); \
-	LUA->gitRelease(L); \
+	LUA->Release(L); \
 }\
 void RemoveGlobalFromLua() {\
 	LUA->UnsetGlobal(#N); \

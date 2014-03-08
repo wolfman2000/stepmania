@@ -594,6 +594,7 @@ endif
 LunaHelpers = \
 LunaAssistant.cpp LunaAssistant.h \
 LunaAnnouncerManager.cpp LunaAnnouncerManager.h \
+LunaGameState.cpp LunaGameState.h \
 LunaSteps.cpp LunaSteps.h
 
 libtommath_a_SOURCES = \

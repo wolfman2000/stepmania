@@ -1874,6 +1874,8 @@
 			<File RelativePath="LunaAssistant.h" />
 			<File RelativePath="LunaAnnouncerManager.cpp" />
 			<File RelativePath="LunaAnnouncerManager.h" />
+			<File RelativePath="LunaGameState.cpp" />
+			<File RelativePath="LunaGameState.h" />
 			<File RelativePath="LunaSteps.cpp" />
 			<File RelativePath="LunaSteps.h" />
 		</Filter>
