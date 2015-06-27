@@ -502,8 +502,11 @@ elseif(APPLE)
   # lost out on avfilter, swresample, and swscale
   if (HAS_FFMPEG)
     list(APPEND SMDATA_LINK_LIB
+      "${SM_FFMPEG_ROOT}/libavdevice/libavdevice.a"
+      "${SM_FFMPEG_ROOT}/libavfilter/libavfilter.a"
       "${SM_FFMPEG_ROOT}/libavformat/libavformat.a"
       "${SM_FFMPEG_ROOT}/libavcodec/libavcodec.a"
+      "${SM_FFMPEG_ROOT}/libswresample/libswresample.a"
       "${SM_FFMPEG_ROOT}/libswscale/libswscale.a"
       "${SM_FFMPEG_ROOT}/libavutil/libavutil.a"
     )
