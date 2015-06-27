@@ -10,7 +10,7 @@ static void PathForFolderType( char dir[PATH_MAX], OSType folderType )
 	FSRef fs;
 
 	if( FSFindFolder(kUserDomain, folderType, kDontCreateFolder, &fs) )
-		FAIL_M( ssprintf("FSFindFolder(%lu) failed.", folderType) );
+		FAIL_M( ssprintf("FSFindFolder(%u) failed.", static_cast<unsigned int>(folderType) ) );
 	if( FSRefMakePath(&fs, (UInt8 *)dir, PATH_MAX) )
 		FAIL_M( "FSRefMakePath() failed." );
 }
