@@ -100,16 +100,19 @@ else()
         "${SM_FFMPEG_SRC_DIR}/configure"
         "--disable-programs"
         "--disable-doc"
-        "--disable-avdevice"
-        "--disable-swresample"
         "--disable-postproc"
-        "--disable-avfilter"
         "--disable-shared"
         "--enable-static"
       )
       if(WITH_GPL_LIBS)
         list(APPEND FFMPEG_CONFIGURE
           "--enable-gpl"
+        )
+      endif()
+      
+      if(APPLE)
+        list(APPEND FFMPEG_CONFIGURE
+          "--disable-yasm"
         )
       endif()
 
