@@ -50,6 +50,9 @@ include("${CMAKE_CURRENT_LIST_DIR}/CMake/SMDefs.cmake")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Dependencies go here.
+include(TestBigEndian)
+include(ExternalProject)
+
 set(ENDIANNESS "ENDIAN_LITTLE")
 if(WIN32)
   set(HAS_OGG TRUE)
@@ -77,6 +80,66 @@ if(WIN32)
     PATHS "${SM_EXTERN_DIR}/ffmpeg/lib" NO_DEFAULT_PATH
   )
   get_filename_component(LIB_AVUTIL ${LIB_AVUTIL} NAME)
+else()
+  if(APPLE OR WITH_FFMPEG)
+    if ((NOT APPLE) AND WITH_SYSTEM_FFMPEG)
+      find_package("FFMPEG")
+      if(NOT FFMPEG_FOUND)
+        message(FATAL_ERROR "System ffmpeg not found! Either install the libraries or remove the argument, then try again.")
+      else()
+
+        message(STATUS "-- Warning! Your version of ffmpeg may be too high! If you want to use the system ffmpeg, clear your cmake cache and do not include the system ffmpeg argument.")
+        set(HAS_FFMPEG TRUE)
+      endif()
+    else()
+      set(SM_FFMPEG_VERSION "2.1.3")
+      set(SM_FFMPEG_SRC_LIST "${SM_EXTERN_DIR}" "/ffmpeg-git")
+      sm_join("${SM_FFMPEG_SRC_LIST}" "" SM_FFMPEG_SRC_DIR)
+      set(SM_FFMPEG_ROOT "${CMAKE_BINARY_DIR}/ffmpeg-prefix/src/ffmpeg-build")
+      list(APPEND FFMPEG_CONFIGURE
+        "${SM_FFMPEG_SRC_DIR}/configure"
+        "--disable-programs"
+        "--disable-doc"
+        "--disable-avdevice"
+        "--disable-swresample"
+        "--disable-postproc"
+        "--disable-avfilter"
+        "--disable-shared"
+        "--enable-static"
+      )
+      if(WITH_GPL_LIBS)
+        list(APPEND FFMPEG_CONFIGURE
+          "--enable-gpl"
+        )
+      endif()
+
+      if (WITH_CRYSTALHD_DISABLED)
+        list(APPEND FFMPEG_CONFIGURE "--disable-crystalhd")
+      endif()
+
+      if (NOT WITH_EXTERNAL_WARNINGS)
+        list(APPEND FFMPEG_CONFIGURE
+          "--extra-cflags=-w"
+        )
+      endif()
+
+      externalproject_add("ffmpeg"
+        SOURCE_DIR "${SM_FFMPEG_SRC_DIR}"
+        CONFIGURE_COMMAND ${FFMPEG_CONFIGURE}
+        BUILD_COMMAND "make"
+        UPDATE_COMMAND ""
+        INSTALL_COMMAND ""
+        TEST_COMMAND ""
+      )
+      set(HAS_FFMPEG TRUE)
+    endif()
+  else()
+    set(HAS_FFMPEG FALSE)
+  endif()
+endif()
+
+if(WIN32)
+
 elseif(MACOSX)
   set(HAS_OGG TRUE)
   set(HAS_MP3 TRUE)
@@ -118,9 +181,6 @@ elseif(MACOSX)
     MAC_FRAME_QUICKTIME
   )
 elseif(LINUX)
-  include(TestBigEndian)
-  include(ExternalProject)
-
   if(NOT WITH_GPL_LIBS)
     message("Disabling GPL exclusive libraries: no MP3 support.")
     set(WITH_MP3 OFF)
@@ -258,58 +318,7 @@ elseif(LINUX)
         set(HAS_FFMPEG TRUE)
       endif()
     else()
-      set(SM_FFMPEG_VERSION "2.1.3")
-      set(SM_FFMPEG_SRC_LIST "${SM_EXTERN_DIR}" "/ffmpeg-linux-" "${SM_FFMPEG_VERSION}")
-      sm_join("${SM_FFMPEG_SRC_LIST}" "" SM_FFMPEG_SRC_DIR)
-      set(SM_FFMPEG_ROOT "${CMAKE_BINARY_DIR}/ffmpeg-prefix/src/ffmpeg-build")
-      list(APPEND FFMPEG_CONFIGURE
-        "${SM_FFMPEG_SRC_DIR}/configure"
-        "--disable-programs"
-        "--disable-doc"
-        "--disable-avdevice"
-        "--disable-swresample"
-        "--disable-postproc"
-        "--disable-avfilter"
-        "--disable-shared"
-        "--enable-static"
-      )
-      if(WITH_GPL_LIBS)
-        list(APPEND FFMPEG_CONFIGURE
-          "--enable-gpl"
-        )
-      endif()
-
-      if (WITH_CRYSTALHD_DISABLED)
-        list(APPEND FFMPEG_CONFIGURE "--disable-crystalhd")
-      endif()
-
-      if (NOT WITH_EXTERNAL_WARNINGS)
-        list(APPEND FFMPEG_CONFIGURE
-          "--extra-cflags=-w"
-        )
-      endif()
-
-      if (IS_DIRECTORY "${SM_FFMPEG_SRC_DIR}")
-        externalproject_add("ffmpeg"
-          SOURCE_DIR "${SM_FFMPEG_SRC_DIR}"
-          CONFIGURE_COMMAND ${FFMPEG_CONFIGURE}
-          BUILD_COMMAND "make"
-          UPDATE_COMMAND ""
-          INSTALL_COMMAND ""
-          TEST_COMMAND ""
-        )
-      else()
-        # --shlibdir=$our_installdir/stepmania-$VERSION
-        externalproject_add("ffmpeg"
-          DOWNLOAD_COMMAND git clone "--branch" "n${SM_FFMPEG_VERSION}" "--depth" "1" "git://source.ffmpeg.org/ffmpeg.git" "${SM_FFMPEG_SRC_DIR}"
-          CONFIGURE_COMMAND "${FFMPEG_CONFIGURE}"
-          BUILD_COMMAND "make"
-          UPDATE_COMMAND ""
-          INSTALL_COMMAND ""
-          TEST_COMMAND ""
-        )
-      endif()
-      set(HAS_FFMPEG TRUE)
+      
     endif()
   else()
     set(HAS_FFMPEG FALSE)
