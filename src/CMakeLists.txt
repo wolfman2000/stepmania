@@ -477,7 +477,6 @@ elseif(APPLE)
     ${MAC_FRAME_CARBON}
     ${MAC_FRAME_COCOA}
     ${MAC_FRAME_IOKIT}
-    ${MAC_FRAME_QUICKTIME}
     ${MAC_FRAME_OPENGL}
     ${MAC_FRAME_COREFOUNDATION}
     ${MAC_FRAME_AUDIOTOOLBOX}
@@ -485,8 +484,8 @@ elseif(APPLE)
     ${MAC_FRAME_COREAUDIO}
     ${MAC_FRAME_CORESERVICES}
     "ogg"
-    "theora"
     "vorbis"
+    "vorbisfile"
     "lua-5.1"
     "tomcrypt"
     "tommath"
