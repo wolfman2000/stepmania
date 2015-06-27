@@ -652,6 +652,7 @@ if(NOT APPLE)
 else()
   list(APPEND SM_INCLUDE_DIRS
     "${SM_EXTERN_DIR}/ffmpeg-git"
+    "${SM_FFMPEG_ROOT}"
     "archutils/Unix"
   )
 endif()
