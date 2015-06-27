@@ -1,5 +1,6 @@
 if(APPLE)
   list(APPEND SMDATA_OS_DARWIN_SRC
+    "archutils/Darwin/Backtrace.mm"
     "archutils/Darwin/Crash.cpp"
     "archutils/Darwin/DarwinThreadHelpers.cpp"
     "archutils/Darwin/HIDDevice.cpp"
@@ -13,6 +14,7 @@ if(APPLE)
   )
   list(APPEND SMDATA_OS_DARWIN_HPP
     "archutils/Darwin/arch_setup.h"
+    "archutils/Darwin/Backtrace.hpp"
     "archutils/Darwin/Crash.h"
     "archutils/Darwin/DarwinThreadHelpers.h"
     "archutils/Darwin/HIDDevice.h"
@@ -89,6 +91,7 @@ else()
   else() # Unix
     list(APPEND SMDATA_OS_SRC # TODO: X11 check, crash handler check
       "archutils/Unix/AssertionHandler.cpp"
+      "archutils/Unix/Backtrace.cpp"
       "archutils/Unix/EmergencyShutdown.cpp"
       "archutils/Unix/GetSysInfo.cpp"
       "archutils/Unix/RunningUnderValgrind.cpp"
@@ -99,6 +102,7 @@ else()
     list(APPEND SMDATA_OS_HPP
       "archutils/Unix/arch_setup.h"
       "archutils/Unix/AssertionHandler.h"
+      "archutils/Unix/Backtrace.h"
       "archutils/Unix/EmergencyShutdown.h"
       "archutils/Unix/GetSysInfo.h"
       "archutils/Unix/RunningUnderValgrind.h"
@@ -129,7 +133,6 @@ endif()
 if(APPLE OR LINUX)
   if (WITH_CRASH_HANDLER)
     list(APPEND SMDATA_OS_UNIX_CRASH_SRC
-      "archutils/Unix/Backtrace.cpp"
       "archutils/Unix/BacktraceNames.cpp"
       "archutils/Unix/CrashHandler.cpp"
       "archutils/Unix/CrashHandlerChild.cpp"
@@ -137,7 +140,6 @@ if(APPLE OR LINUX)
       "archutils/Unix/SignalHandler.cpp"
     )
     list(APPEND SMDATA_OS_UNIX_CRASH_HPP
-      "archutils/Unix/Backtrace.h"
       "archutils/Unix/BacktraceNames.h"
       "archutils/Unix/CrashHandler.h"
       "archutils/Unix/CrashHandlerInternal.h"
