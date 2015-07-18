@@ -294,42 +294,42 @@ endif
 # Platform-specific drivers
 # =========================
 if UNIX
- ArchHooks += arch/ArchHooks/ArchHooks_Unix.cpp arch/ArchHooks/ArchHooks_Unix.h
+  ArchHooks += arch/ArchHooks/ArchHooks_Unix.cpp arch/ArchHooks/ArchHooks_Unix.h
 
-if LINUX
-  InputHandler += arch/InputHandler/LinuxInputManager.cpp arch/InputHandler/LinuxInputManager.h \
-		arch/InputHandler/InputHandler_Linux_Joystick.cpp arch/InputHandler/InputHandler_Linux_Joystick.h \
-		arch/InputHandler/InputHandler_Linux_Event.cpp arch/InputHandler/InputHandler_Linux_Event.h \
-		arch/InputHandler/InputHandler_Linux_PIUIO.cpp arch/InputHandler/InputHandler_Linux_PIUIO.h
+  if LINUX
+    InputHandler += arch/InputHandler/LinuxInputManager.cpp arch/InputHandler/LinuxInputManager.h \
+      arch/InputHandler/InputHandler_Linux_Joystick.cpp arch/InputHandler/InputHandler_Linux_Joystick.h \
+      arch/InputHandler/InputHandler_Linux_Event.cpp arch/InputHandler/InputHandler_Linux_Event.h \
+      arch/InputHandler/InputHandler_Linux_PIUIO.cpp arch/InputHandler/InputHandler_Linux_PIUIO.h
 
-  Lights += arch/Lights/LightsDriver_LinuxWeedTech.cpp arch/Lights/LightsDriver_LinuxWeedTech.h \
-		arch/Lights/LightsDriver_Linux_PIUIO.cpp arch/Lights/LightsDriver_Linux_PIUIO.h \
-		arch/Lights/LightsDriver_Linux_PIUIO_Leds.cpp arch/Lights/LightsDriver_Linux_PIUIO_Leds.h
+    Lights += arch/Lights/LightsDriver_LinuxWeedTech.cpp arch/Lights/LightsDriver_LinuxWeedTech.h \
+      arch/Lights/LightsDriver_Linux_PIUIO.cpp arch/Lights/LightsDriver_Linux_PIUIO.h \
+      arch/Lights/LightsDriver_Linux_PIUIO_Leds.cpp arch/Lights/LightsDriver_Linux_PIUIO_Leds.h
 
-  MemoryCard += arch/MemoryCard/MemoryCardDriverThreaded_Linux.cpp arch/MemoryCard/MemoryCardDriverThreaded_Linux.h
+    MemoryCard += arch/MemoryCard/MemoryCardDriverThreaded_Linux.cpp arch/MemoryCard/MemoryCardDriverThreaded_Linux.h
 
-if HAVE_ALSA
-   Sound += arch/Sound/ALSA9Dynamic.cpp arch/Sound/ALSA9Dynamic.h \
-	arch/Sound/ALSA9Functions.h \
-	arch/Sound/ALSA9Helpers.cpp arch/Sound/ALSA9Helpers.h \
-	arch/Sound/RageSoundDriver_ALSA9_Software.cpp arch/Sound/RageSoundDriver_ALSA9_Software.h
+    if HAVE_ALSA
+       Sound += arch/Sound/ALSA9Dynamic.cpp arch/Sound/ALSA9Dynamic.h \
+      arch/Sound/ALSA9Functions.h \
+      arch/Sound/ALSA9Helpers.cpp arch/Sound/ALSA9Helpers.h \
+      arch/Sound/RageSoundDriver_ALSA9_Software.cpp arch/Sound/RageSoundDriver_ALSA9_Software.h
 
-   # Add this to AM_CXXFLAGS, not stepmania_CXXFLAGS: that'll cause multiple copies of
-   # several sources to be built. We link to this at runtime, so don't add ALSA_LDFLAGS.
-   AM_CXXFLAGS += $(ALSA_CFLAGS)
-endif
+       # Add this to AM_CXXFLAGS, not stepmania_CXXFLAGS: that'll cause multiple copies of
+       # several sources to be built. We link to this at runtime, so don't add ALSA_LDFLAGS.
+       AM_CXXFLAGS += $(ALSA_CFLAGS)
+    endif
 
-if HAVE_PARALLEL_PORT
-   Lights += arch/Lights/LightsDriver_LinuxParallel.cpp arch/Lights/LightsDriver_LinuxParallel.h
-endif
+    if HAVE_PARALLEL_PORT
+       Lights += arch/Lights/LightsDriver_LinuxParallel.cpp arch/Lights/LightsDriver_LinuxParallel.h
+    endif
 
-if WITH_TTY
-   InputHandler += arch/InputHandler/InputHandler_Linux_tty.cpp arch/InputHandler/InputHandler_Linux_tty.h \
-		arch/InputHandler/InputHandler_Linux_tty_keys.h
-endif
-endif
+    if WITH_TTY
+       InputHandler += arch/InputHandler/InputHandler_Linux_tty.cpp arch/InputHandler/InputHandler_Linux_tty.h \
+        arch/InputHandler/InputHandler_Linux_tty_keys.h
+    endif
+  endif
 
- ArchUtils += archutils/Unix/AssertionHandler.cpp archutils/Unix/AssertionHandler.h \
+  ArchUtils += archutils/Unix/AssertionHandler.cpp archutils/Unix/AssertionHandler.h \
 		archutils/Unix/arch_setup.h \
 		archutils/Unix/GetSysInfo.cpp archutils/Unix/GetSysInfo.h \
 		archutils/Unix/SignalHandler.cpp archutils/Unix/SignalHandler.h \
@@ -338,79 +338,79 @@ endif
 		archutils/Unix/StackCheck.cpp archutils/Unix/SpecialDirs.cpp archutils/Unix/SpecialDirs.h \
 		archutils/Common/gcc_byte_swaps.h
 
-if USE_CRASH_HANDLER
-  ArchUtils += archutils/Unix/Backtrace.cpp archutils/Unix/Backtrace.h \
-		archutils/Unix/BacktraceNames.cpp archutils/Unix/BacktraceNames.h \
-		archutils/Unix/CrashHandler.cpp archutils/Unix/CrashHandler.h \
-		archutils/Unix/CrashHandlerChild.cpp archutils/Unix/CrashHandlerInternal.h \
-		archutils/Unix/CrashHandlerInternal.cpp
-endif
+  if USE_CRASH_HANDLER
+    ArchUtils += archutils/Unix/Backtrace.cpp archutils/Unix/Backtrace.h \
+      archutils/Unix/BacktraceNames.cpp archutils/Unix/BacktraceNames.h \
+      archutils/Unix/CrashHandler.cpp archutils/Unix/CrashHandler.h \
+      archutils/Unix/CrashHandlerChild.cpp archutils/Unix/CrashHandlerInternal.h \
+      archutils/Unix/CrashHandlerInternal.cpp
+  endif
 endif
 # =========================================
 if WINDOWS
- ArchHooks += arch/ArchHooks/ArchHooks_Win32.cpp arch/ArchHooks/ArchHooks_Win32.h \
-	arch/ArchHooks/ArchHooks_Win32Static.cpp
+  ArchHooks += arch/ArchHooks/ArchHooks_Win32.cpp arch/ArchHooks/ArchHooks_Win32.h \
+    arch/ArchHooks/ArchHooks_Win32Static.cpp
 
- ArchUtils += archutils/Win32/arch_time.cpp \
-	archutils/Win32/AppInstance.cpp archutils/Win32/AppInstance.h \
-	archutils/Win32/Crash.cpp archutils/Win32/Crash.h \
-	archutils/Win32/CrashHandlerChild.cpp \
-	archutils/Win32/CrashHandlerInternal.h \
-	archutils/Win32/CrashHandlerNetworking.cpp archutils/Win32/CrashHandlerNetworking.h \
-	archutils/Win32/DebugInfoHunt.cpp archutils/Win32/DebugInfoHunt.h \
-	archutils/Win32/DialogUtil.cpp archutils/Win32/DialogUtil.h \
-	archutils/Win32/DirectXHelpers.cpp archutils/Win32/DirectXHelpers.h \
-	archutils/Win32/ErrorStrings.cpp archutils/Win32/ErrorStrings.h \
-	archutils/Win32/GetFileInformation.cpp archutils/Win32/GetFileInformation.h \
-	archutils/Win32/GoToURL.cpp archutils/Win32/GoToURL.h \
-	archutils/Win32/GraphicsWindow.cpp archutils/Win32/GraphicsWindow.h \
-	archutils/Win32/MessageWindow.cpp archutils/Win32/MessageWindow.h \
-	archutils/Win32/RegistryAccess.cpp archutils/Win32/RegistryAccess.h \
-	archutils/Win32/RestartProgram.cpp archutils/Win32/RestartProgram.h \
-	archutils/Win32/SpecialDirs.cpp archutils/Win32/SpecialDirs.h \
-	archutils/Win32/USB.cpp archutils/Win32/USB.h \
-	archutils/Win32/VideoDriverInfo.cpp archutils/Win32/VideoDriverInfo.h \
-	archutils/Win32/WindowIcon.cpp archutils/Win32/WindowIcon.h \
-	archutils/Win32/WindowsDialogBox.cpp archutils/Win32/WindowsDialogBox.h \
-	archutils/Win32/WindowsResources.rc archutils/Win32/WindowsResources.h
+  ArchUtils += archutils/Win32/arch_time.cpp \
+    archutils/Win32/AppInstance.cpp archutils/Win32/AppInstance.h \
+    archutils/Win32/Crash.cpp archutils/Win32/Crash.h \
+    archutils/Win32/CrashHandlerChild.cpp \
+    archutils/Win32/CrashHandlerInternal.h \
+    archutils/Win32/CrashHandlerNetworking.cpp archutils/Win32/CrashHandlerNetworking.h \
+    archutils/Win32/DebugInfoHunt.cpp archutils/Win32/DebugInfoHunt.h \
+    archutils/Win32/DialogUtil.cpp archutils/Win32/DialogUtil.h \
+    archutils/Win32/DirectXHelpers.cpp archutils/Win32/DirectXHelpers.h \
+    archutils/Win32/ErrorStrings.cpp archutils/Win32/ErrorStrings.h \
+    archutils/Win32/GetFileInformation.cpp archutils/Win32/GetFileInformation.h \
+    archutils/Win32/GoToURL.cpp archutils/Win32/GoToURL.h \
+    archutils/Win32/GraphicsWindow.cpp archutils/Win32/GraphicsWindow.h \
+    archutils/Win32/MessageWindow.cpp archutils/Win32/MessageWindow.h \
+    archutils/Win32/RegistryAccess.cpp archutils/Win32/RegistryAccess.h \
+    archutils/Win32/RestartProgram.cpp archutils/Win32/RestartProgram.h \
+    archutils/Win32/SpecialDirs.cpp archutils/Win32/SpecialDirs.h \
+    archutils/Win32/USB.cpp archutils/Win32/USB.h \
+    archutils/Win32/VideoDriverInfo.cpp archutils/Win32/VideoDriverInfo.h \
+    archutils/Win32/WindowIcon.cpp archutils/Win32/WindowIcon.h \
+    archutils/Win32/WindowsDialogBox.cpp archutils/Win32/WindowsDialogBox.h \
+    archutils/Win32/WindowsResources.rc archutils/Win32/WindowsResources.h
 
- Dialog += arch/Dialog/DialogDriver_Win32.cpp arch/Dialog/DialogDriver_Win32.h
+  Dialog += arch/Dialog/DialogDriver_Win32.cpp arch/Dialog/DialogDriver_Win32.h
 
- LoadingWindow += arch/LoadingWindow/LoadingWindow_Win32.cpp arch/LoadingWindow/LoadingWindow_Win32.h
+  LoadingWindow += arch/LoadingWindow/LoadingWindow_Win32.cpp arch/LoadingWindow/LoadingWindow_Win32.h
 
- LowLevelWindow += arch/LowLevelWindow/LowLevelWindow_Win32.cpp arch/LowLevelWindow/LowLevelWindow_Win32.h
+  LowLevelWindow += arch/LowLevelWindow/LowLevelWindow_Win32.cpp arch/LowLevelWindow/LowLevelWindow_Win32.h
 
- MemoryCard += arch/MemoryCard/MemoryCardDriverThreaded_Windows.cpp arch/MemoryCard/MemoryCardDriverThreaded_Windows.h
+  MemoryCard += arch/MemoryCard/MemoryCardDriverThreaded_Windows.cpp arch/MemoryCard/MemoryCardDriverThreaded_Windows.h
 
- # XXX We may want to ditch DirectShow in favor of using ffmpeg on all platforms.
- # FIXME BROKEN
- # MovieTexture += arch/MovieTexture/MovieTexture_DShow.cpp arch/MovieTexture/MovieTexture_DShow.h \
- #	arch/MovieTexture/MovieTexture_DShowHelper.cpp arch/MovieTexture/MovieTexture_DShowHelper.h
+  # XXX We may want to ditch DirectShow in favor of using ffmpeg on all platforms.
+  # FIXME BROKEN
+  # MovieTexture += arch/MovieTexture/MovieTexture_DShow.cpp arch/MovieTexture/MovieTexture_DShow.h \
+  #	arch/MovieTexture/MovieTexture_DShowHelper.cpp arch/MovieTexture/MovieTexture_DShowHelper.h
 
- # XXX: Do we want to detect DirectX SDK and selectively enable DirectX drivers?
- InputHandler += arch/InputHandler/InputHandler_DirectInput.cpp arc/InputHandler/InputHandler_DirectInput.h \
+  # XXX: Do we want to detect DirectX SDK and selectively enable DirectX drivers?
+  InputHandler += arch/InputHandler/InputHandler_DirectInput.cpp arc/InputHandler/InputHandler_DirectInput.h \
 		arch/InputHandler/InputHandler_DirectInputHelper.cpp arch/InputHandler/InputHandler_DirectInputHelper.h \
 		arch/InputHandler/InputHandler_Win32_MIDI.cpp arch/InputHandler/InputHandler_Win32_MIDI.h \
 		arch/InputHandler/InputHandler_Win32_Para.cpp arch/InputHandler/InputHandler_Win32_Para.h \
 		arch/InputHandler/InputHandler_Win32_Pump.cpp arch/InputHandler/InputHandler_Win32_Pump.h
 
- Sound += arch/Sound/RageSoundDriver_DSound_Software.cpp arch/Sound/RageSoundDriver_DSound_Software.h \
-	arch/Sound/DSoundHelpers.cpp arch/Sound/DSoundHelpers.h \
-	arch/Sound/RageSoundDriver_WaveOut.cpp arch/Sound/RageSoundDriver_WaveOut.h
-# FIXME: BROKEN
-# 	arch/Sound/RageSoundDriver_WDMKS.cpp arch/Sound/RageSoundDriver_WDMKS.h
+  Sound += arch/Sound/RageSoundDriver_DSound_Software.cpp arch/Sound/RageSoundDriver_DSound_Software.h \
+    arch/Sound/DSoundHelpers.cpp arch/Sound/DSoundHelpers.h \
+    arch/Sound/RageSoundDriver_WaveOut.cpp arch/Sound/RageSoundDriver_WaveOut.h
+  # FIXME: BROKEN
+  # 	arch/Sound/RageSoundDriver_WDMKS.cpp arch/Sound/RageSoundDriver_WDMKS.h
 
-if HAVE_PARALLEL_PORT
-  Lights += arch/Lights/LightsDriver_Win32Parallel.cpp arch/Lights/LightsDriver_Win32Parallel.h
-endif
+  if HAVE_PARALLEL_PORT
+    Lights += arch/Lights/LightsDriver_Win32Parallel.cpp arch/Lights/LightsDriver_Win32Parallel.h
+  endif
 
-if HAVE_MINIMAID
-  Lights += arch/Lights/LightsDriver_Win32Minimaid.cpp arch/Lights/LightsDriver_Win32Minimaid.h
-endif
+  if HAVE_MINIMAID
+    Lights += arch/Lights/LightsDriver_Win32Minimaid.cpp arch/Lights/LightsDriver_Win32Minimaid.h
+  endif
 
-if !HAVE_PTHREAD
-  Threads += arch/Threads/Threads_Win32.cpp arch/Threads/Threads_Win32.h
-endif
+  if !HAVE_PTHREAD
+    Threads += arch/Threads/Threads_Win32.cpp arch/Threads/Threads_Win32.h
+  endif
 endif
 
 Arch = $(LoadingWindow) $(Sound) $(ArchHooks) $(InputHandler) $(MovieTexture) \

@@ -1,31 +1,31 @@
 file(MAKE_DIRECTORY "${SM_SRC_DIR}/generated")
 
-if(MSVC)
-# Version Updater library.
-add_subdirectory(version_updater)
+if(WIN32)
+  # Version Updater library.
+  add_subdirectory(version_updater)
 
-# This part may move to a different file: it's the SM Data project.
-add_custom_command(
-  OUTPUT ${SM_SRC_DIR}/generated/verstub.cpp
-  COMMAND VersionUpdater ${SM_SRC_DIR}/generated/verstub.cpp
-  DEPENDS VersionUpdater
-)
+  # This part may move to a different file: it's the SM Data project.
+  add_custom_command(
+    OUTPUT ${SM_SRC_DIR}/generated/verstub.cpp
+    COMMAND VersionUpdater ${SM_SRC_DIR}/generated/verstub.cpp
+    DEPENDS VersionUpdater
+  )
 else()
-# Version Stub generation. Needs fixing on Windows.
-add_custom_command(
-  OUTPUT ${SM_SRC_DIR}/generated/verstub.cpp
-  COMMAND ${CMAKE_COMMAND}
-  ARGS -DSM_SRC_DIR=${SM_SRC_DIR} -P ${SM_SRC_DIR}/../CMake/VerStubUtil.cmake
-  WORKING_DIRECTORY "${SM_ROOT_DIR}"
-  DEPENDS ${SM_SRC_DIR}/generated/delete
-)
+  # Version Stub generation. Needs fixing on Windows.
+  add_custom_command(
+    OUTPUT ${SM_SRC_DIR}/generated/verstub.cpp
+    COMMAND ${CMAKE_COMMAND}
+    ARGS -DSM_SRC_DIR=${SM_SRC_DIR} -P ${SM_SRC_DIR}/../CMake/VerStubUtil.cmake
+    WORKING_DIRECTORY "${SM_ROOT_DIR}"
+    DEPENDS ${SM_SRC_DIR}/generated/delete
+  )
 
-add_custom_command(
-  OUTPUT ${SM_SRC_DIR}/generated/delete
-  COMMAND rm
-  ARGS -f ${SM_SRC_DIR}/generated/ver*
-  WORKING_DIRECTORY "${SM_ROOT_DIR}"
-)
+  add_custom_command(
+    OUTPUT ${SM_SRC_DIR}/generated/delete
+    COMMAND rm
+    ARGS -f ${SM_SRC_DIR}/generated/ver*
+    WORKING_DIRECTORY "${SM_ROOT_DIR}"
+  )
 endif()
 
 # Main project is below.
@@ -211,6 +211,13 @@ elseif (WITH_NO_ROLC_TOMCRYPT OR APPLE)
 endif()
 
 sm_add_compile_definition("${SM_EXE_NAME}" CMAKE_POWERED)
+sm_add_compile_definition("${SM_EXE_NAME}" "${ENDIANNESS}")
+
+if(MINGW)
+  sm_add_compile_definition("${SM_EXE_NAME}" MINGW)
+  sm_add_compile_definition("${SM_EXE_NAME}" "PBS_MARQUEE=0x08")
+  sm_add_compile_definition("${SM_EXE_NAME}" "PBM_SETMARQUEE=(WM_USER+10)")
+endif()
 
 if (NOT WITH_NETWORKING)
   sm_add_compile_definition("${SM_EXE_NAME}" WITHOUT_NETWORKING)
@@ -365,8 +372,6 @@ elseif(APPLE)
     COMMAND ${CMAKE_COMMAND} -E copy "${SM_XCODE_DIR}/Hardware.plist" "$<TARGET_FILE_DIR:StepMania>/../Resources/"
   )
 else() # Linux
-  # TODO: Have this compile definition be used all over. Currently fixed for Windows and Mac, but in headers.
-  sm_add_compile_definition("${SM_EXE_NAME}" "${ENDIANNESS}")
   set_target_properties("${SM_EXE_NAME}" PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${SM_ROOT_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${SM_ROOT_DIR}"

@@ -1,4 +1,8 @@
+# Include helper libraries that will be used.
 
+include(TestBigEndian)
+include(ExternalProject)
+  
 # Include the macros and functions.
 include(${CMAKE_CURRENT_LIST_DIR}/CMake/CMakeMacros.cmake)
 
@@ -17,6 +21,7 @@ set(SM_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 set(SM_EXE_NAME "StepMania")
 
 # Some OS specific helpers.
+
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
   set(LINUX TRUE)
 else()
@@ -45,8 +50,15 @@ include("${CMAKE_CURRENT_LIST_DIR}/CMake/SMDefs.cmake")
 # Put the predefined targets in separate groups.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# Dependencies go here.
 set(ENDIANNESS "ENDIAN_LITTLE")
+test_big_endian(BIGENDIAN)
+if (${BIGENDIAN})
+  set(ENDIANNESS "ENDIAN_BIG")
+endif()
+
+# Dependencies go here.
+
+
 if(WIN32)
   set(HAS_OGG TRUE)
   set(HAS_MP3 TRUE)
@@ -114,9 +126,6 @@ elseif(MACOSX)
     MAC_FRAME_QUICKTIME
   )
 elseif(LINUX)
-  include(TestBigEndian)
-  include(ExternalProject)
-
   if(NOT WITH_GPL_LIBS)
     message("Disabling GPL exclusive libraries: no MP3 support.")
     set(WITH_MP3 OFF)
@@ -320,12 +329,6 @@ elseif(LINUX)
   if (NOT ${GLEW_FOUND})
     message(FATAL_ERROR "GLEW required to compile StepMania.")
   endif()
-
-  test_big_endian(BIGENDIAN)
-  if (${BIGENDIAN})
-    set(ENDIANNESS "ENDIAN_BIG")
-  endif()
-
 endif()
 
 # Define installer based items for cpack.

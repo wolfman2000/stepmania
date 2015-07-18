@@ -22,7 +22,8 @@ InputHandler_Win32_Pump::InputHandler_Win32_Pump()
 	m_pDevice = new USBDevice[NUM_PUMPS];
 
 	int iNumFound = 0;
-	for( int p = 0; p < ARRAYSIZE(pump_usb_pids); ++p )
+	// TODO: Use the C++11 range for here.
+	for( int p = 0; p < 2; ++p )
 	{
 		const int pump_usb_pid = pump_usb_pids[p];
 		for( int i = 0; i < NUM_PUMPS; ++i )

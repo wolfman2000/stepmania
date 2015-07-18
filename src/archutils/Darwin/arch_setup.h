@@ -25,7 +25,6 @@ extern "C" int sm_main( int argc, char *argv[] );
 #define NO_GL_FLUSH
 
 #define CPU_X86
-#define ENDIAN_LITTLE
 #define BACKTRACE_METHOD_X86_DARWIN
 #define BACKTRACE_LOOKUP_METHOD_DLADDR
 

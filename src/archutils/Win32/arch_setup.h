@@ -141,11 +141,8 @@ static inline int64_t llabs( int64_t i ) { return i >= 0? i: -i; }
 #define MISSING_STDINT_H
 #endif
 
-// MinGW provides us with this function already
-
-#if !defined(__MINGW32__) \
-		/* VC++ 2013 added the support of lrintf	*/\
-		&& (!defined(_MSC_VER) || _MSC_VER < 1800)
+// MinGW provides us with this function already, as did Visual Studio 2013.
+#if !defined(__MINGW32__) && (!defined(_MSC_VER) || _MSC_VER < 1800)
 
 inline long int lrintf( float f )
 {
@@ -165,11 +162,6 @@ inline long int lrintf( float f )
  * completely uniform across platforms yet). */
 #if !defined(SMPACKAGE)
 #define CRASH_HANDLER
-#endif
-
-// autoconf does this for us
-#if !defined(__MINGW32__)
-#define ENDIAN_LITTLE
 #endif
 
 #if defined(__GNUC__) // It might be MinGW or Cygwin(?)
