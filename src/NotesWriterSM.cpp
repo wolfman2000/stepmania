@@ -12,6 +12,7 @@
 #include "RageFileManager.h"
 #include "RageLog.h"
 #include "RageUtil.h"
+#include "RageString.hpp"
 #include "Song.h"
 #include "Steps.h"
 #include "ThemeMetric.h"
@@ -45,8 +46,9 @@ static void WriteGlobalTags( RageFile &f, Song &out )
 	f.PutLine( fmt::sprintf( "#SAMPLELENGTH:%.6f;", out.m_fMusicSampleLengthSeconds ) );
 	float specBeat = out.GetSpecifiedLastBeat();
 	if( specBeat > 0 )
+	{
 		f.PutLine( fmt::sprintf("#LASTBEATHINT:%.6f;", specBeat) );
-
+	}
 	f.Write( "#SELECTABLE:" );
 	switch(out.m_SelectionDisplay)
 	{
@@ -65,10 +67,14 @@ static void WriteGlobalTags( RageFile &f, Song &out )
 			break;
 		case DISPLAY_BPM_SPECIFIED:
 			if( out.m_fSpecifiedBPMMin == out.m_fSpecifiedBPMMax )
+			{
 				f.PutLine( fmt::sprintf( "#DISPLAYBPM:%.6f;", out.m_fSpecifiedBPMMin ) );
+			}
 			else
+			{
 				f.PutLine( fmt::sprintf( "#DISPLAYBPM:%.6f:%.6f;",
 									out.m_fSpecifiedBPMMin, out.m_fSpecifiedBPMMax ) );
+			}
 			break;
 		case DISPLAY_BPM_RANDOM:
 			f.PutLine( fmt::sprintf( "#DISPLAYBPM:*;" ) );
@@ -86,7 +92,9 @@ static void WriteGlobalTags( RageFile &f, Song &out )
 
 		f.PutLine( fmt::sprintf( "%.6f=%.6f", bs->GetBeat(), bs->GetBPM() ) );
 		if( i != bpms.size()-1 )
+		{
 			f.Write( "," );
+		}
 	}
 	f.PutLine( ";" );
 
@@ -117,7 +125,9 @@ static void WriteGlobalTags( RageFile &f, Song &out )
 
 		// erase stops with negative length
 		if( fs->GetPause() < 0 )
+		{
 			timing.AddSegment( StopSegment(fs->GetRow(), 0) );
+		}
 	}
 	// Delays can't be negative: thus, no effect.
 	for (auto const *ss: delays)
@@ -128,24 +138,29 @@ static void WriteGlobalTags( RageFile &f, Song &out )
 	}
 
 	f.Write( "#STOPS:" );
-	vector<RString> stopLines;
-	for (auto const &ap: allPauses)
+	vector<std::string> stopLines;
+	for ( auto const &pause: allPauses )
 	{
-		stopLines.push_back(fmt::sprintf("%.6f=%.6f", ap.first, ap.second));
+		stopLines.push_back(fmt::sprintf("%.6f=%.6f", pause.first, pause.second));
 	}
-	f.PutLine(join(",\n", stopLines));
+	f.PutLine(Rage::join(",\n", stopLines));
 
 	f.PutLine( ";" );
 
 	FOREACH_BackgroundLayer( b )
 	{
 		if( b==0 )
+		{
 			f.Write( "#BGCHANGES:" );
+		}
 		else if( out.GetBackgroundChanges(b).empty() )
+		{
 			continue;	// skip
+		}
 		else
+		{
 			f.Write( fmt::sprintf("#BGCHANGES%d:", b+1) );
-
+		}
 		for (auto &bgc: out.GetBackgroundChanges(b))
 		{
 			f.PutLine(bgc.ToString() + "," );
@@ -156,7 +171,9 @@ static void WriteGlobalTags( RageFile &f, Song &out )
 		 * This tag will be removed on load.  Add it at a very high beat, so it won't cause
 		 * problems if loaded in older versions. */
 		if( b==0 && !out.GetBackgroundChanges(b).empty() )
+		{
 			f.PutLine( "99999=-nosongbg-=1.000=0=0=0 // don't automatically add -songbackground-" );
+		}
 		f.PutLine( ";" );
 	}
 
@@ -175,7 +192,9 @@ static void WriteGlobalTags( RageFile &f, Song &out )
 	{
 		f.Write( out.m_vsKeysoundFile[i] );
 		if( i != out.m_vsKeysoundFile.size()-1 )
+		{
 			f.Write( "," );
+		}
 	}
 	f.PutLine( ";" );
 
@@ -198,7 +217,7 @@ static RString JoinLineList( vector<RString> &lines )
 	{
 		++j;
 	}
-	return join( "\r\n", lines.begin()+j, lines.end() );
+	return Rage::join( "\r\n", lines.begin()+j, lines.end() );
 }
 
 /**
@@ -221,7 +240,7 @@ static RString GetSMNotesTag( const Song &song, const Steps &in )
 	lines.push_back( fmt::sprintf( "     %s:", DifficultyToString(in.GetDifficulty()).c_str() ) );
 	lines.push_back( fmt::sprintf( "     %d:", in.GetMeter() ) );
 
-	vector<RString> asRadarValues;
+	vector<std::string> asRadarValues;
 	// OpenITG simfiles use 11 radar categories.
 	int categories = 11;
 	FOREACH_PlayerNumber( pn )
@@ -234,7 +253,7 @@ static RString GetSMNotesTag( const Song &song, const Steps &in )
 			asRadarValues.push_back( fmt::sprintf("%.6f", rv[rc]) );
 		}
 	}
-	lines.push_back( fmt::sprintf( "     %s:", join(",",asRadarValues).c_str() ) );
+	lines.push_back( fmt::sprintf( "     %s:", Rage::join(",",asRadarValues).c_str() ) );
 
 	RString sNoteData;
 	in.GetSMNoteData( sNoteData );
@@ -280,7 +299,9 @@ void NotesWriterSM::GetEditFileContents( const Song *pSong, const Steps *pSteps,
 	vector<RString> asParts;
 	split( sDir, "/", asParts );
 	if( asParts.size() )
-		sDir = join( "/", asParts.begin()+1, asParts.end() );
+	{
+		sDir = Rage::join( "/", asParts.begin()+1, asParts.end() );
+	}
 	sOut += fmt::sprintf( "#SONG:%s;\r\n", sDir.c_str() );
 	sOut += GetSMNotesTag( *pSong, *pSteps );
 }
