@@ -205,7 +205,7 @@ static void WriteGlobalTags( RageFile &f, Song &out )
  * @brief Turn a vector of lines into a single line joined by newline characters.
  * @param lines the list of lines to join.
  * @return the joined lines. */
-static RString JoinLineList( vector<RString> &lines )
+static RString JoinLineList( vector<std::string> &lines )
 {
 	for (auto &line: lines)
 	{
@@ -227,7 +227,7 @@ static RString JoinLineList( vector<RString> &lines )
  * @return the #NOTES tag. */
 static RString GetSMNotesTag( const Song &song, const Steps &in )
 {
-	vector<RString> lines;
+	vector<std::string> lines;
 
 	lines.push_back( "" );
 	// Escape to prevent some clown from making a comment of "\r\n;"
@@ -257,8 +257,8 @@ static RString GetSMNotesTag( const Song &song, const Steps &in )
 
 	RString sNoteData;
 	in.GetSMNoteData( sNoteData );
-
-	split( sNoteData, "\n", lines, true );
+	auto splitData = Rage::split(sNoteData, "\n", Rage::EmptyEntries::skip);
+	lines.insert(lines.end(), std::make_move_iterator(splitData.begin()), std::make_move_iterator(splitData.end()));
 	lines.push_back( ";" );
 
 	return JoinLineList( lines );
@@ -296,8 +296,7 @@ void NotesWriterSM::GetEditFileContents( const Song *pSong, const Steps *pSteps,
 	RString sDir = pSong->GetSongDir();
 
 	// "Songs/foo/bar"; strip off "Songs/".
-	vector<RString> asParts;
-	split( sDir, "/", asParts );
+	auto asParts = Rage::split(sDir, "/");
 	if( asParts.size() )
 	{
 		sDir = Rage::join( "/", asParts.begin()+1, asParts.end() );

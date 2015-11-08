@@ -21,7 +21,7 @@ using std::vector;
  * @brief Turn a vector of lines into a single line joined by newline characters.
  * @param lines the list of lines to join.
  * @return the joined lines. */
-static RString JoinLineList( vector<RString> &lines )
+static RString JoinLineList( vector<std::string> &lines )
 {
 	for (auto &line: lines)
 	{
@@ -40,10 +40,10 @@ static RString JoinLineList( vector<RString> &lines )
 // A utility class to write timing tags more easily!
 struct TimingTagWriter {
 
-	vector<RString> *m_pvsLines;
+	vector<std::string> *m_pvsLines;
 	RString m_sNext;
 
-	TimingTagWriter( vector<RString> *pvsLines ): m_pvsLines (pvsLines) { }
+	TimingTagWriter( vector<std::string> *pvsLines ): m_pvsLines (pvsLines) { }
 
 	void Write( const int row, std::string const &value )
 	{
@@ -63,7 +63,7 @@ struct TimingTagWriter {
 
 };
 
-static void GetTimingTags( vector<RString> &lines, const TimingData &timing, bool bIsSong = false )
+static void GetTimingTags( vector<std::string> &lines, const TimingData &timing, bool bIsSong = false )
 {
 	TimingTagWriter w ( &lines );
 
@@ -374,7 +374,7 @@ static void WriteGlobalTags( RageFile &f, const Song &out )
  * @return the NoteData in RString form. */
 static RString GetSSCNoteData( const Song &song, const Steps &in, bool bSavingCache )
 {
-	vector<RString> lines;
+	vector<std::string> lines;
 
 	lines.push_back( "" );
 	// Escape to prevent some clown from making a comment of "\r\n;"
@@ -452,7 +452,8 @@ static RString GetSSCNoteData( const Song &song, const Steps &in, bool bSavingCa
 		lines.push_back( song.m_vsKeysoundFile.empty() ? "#NOTES:" : "#NOTES2:" );
 
 		sNoteData = Rage::trim_left(sNoteData);
-		split( sNoteData, "\n", lines, true );
+		auto splitData = Rage::split(sNoteData, "\n", Rage::EmptyEntries::skip);
+		lines.insert(lines.end(), std::make_move_iterator(splitData.begin()), std::make_move_iterator(splitData.end()));
 		lines.push_back( ";" );
 	}
 	return JoinLineList( lines );
@@ -507,8 +508,7 @@ void NotesWriterSSC::GetEditFileContents( const Song *pSong, const Steps *pSteps
 	RString sDir = pSong->GetSongDir();
 
 	// "Songs/foo/bar"; strip off "Songs/".
-	vector<RString> asParts;
-	split( sDir, "/", asParts );
+	auto asParts = Rage::split(sDir, "/");
 	if( asParts.size() )
 	{
 		sDir = Rage::join( "/", asParts.begin()+1, asParts.end() );

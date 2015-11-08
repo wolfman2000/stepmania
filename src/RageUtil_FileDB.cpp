@@ -402,11 +402,10 @@ void FilenameDB::AddFile( const RString &sPath_, int iSize, int iHash, void *pPr
 	if( sPath[0] != '/' )
 		sPath = "/" + sPath;
 
-	vector<RString> asParts;
-	split( sPath, "/", asParts, false );
+	auto asParts = Rage::split(sPath, "/", Rage::EmptyEntries::include);
 
-	vector<RString>::const_iterator begin = asParts.begin();
-	vector<RString>::const_iterator end = asParts.end();
+	auto begin = asParts.begin();
+	auto end = asParts.end();
 
 	bool IsDir = true;
 	if( sPath[sPath.size()-1] != '/' )
