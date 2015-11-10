@@ -8,6 +8,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#if 0
+
 #define MAX_FNAMBUF		(0x0FFFFFFF)
 #define MAX_SEGMENTS	(64)
 #define MAX_GROUPS		(64)
@@ -296,6 +298,62 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
+
+#else
+
+#include <fstream>
+#include <string>
+#include <iostream>
+
+class MapConverter
+{
+public:
+	MapConverter(std::string const &map, std::string const &vdi): mapFile{map, std::ios::in}, vdiFile{vdi, std::ios::out | std::ios::binary}
+	{}
+
+	bool CanRead() const
+	{
+		return mapFile.good();
+	}
+
+	bool CanWrite() const
+	{
+		return vdiFile.good();
+	}
+
+private:
+	std::ifstream mapFile;
+	std::ofstream vdiFile;
+};
+
+int main(int argc, char **argv) {
+	int i{ 0 };
+	long load_addr{ 0 };
+
+	if (argc < 3) {
+		printf("mapconv <listing-file> <output-name>\n");
+		return 10;
+	}
+
+	// TODO: Replace with vertub's version_date.
+	int ver = 20151002;
+
+	MapConverter converter{ argv[1], argv[2] };
+	if (!converter.CanRead())
+	{
+		std::cout << "Can't open listing file \"" << argv[1] << "\"\n";
+		return 20;
+	}
+	if (!converter.CanWrite())
+	{
+		std::cout << "Can't open output file \"" << argv[2] << "\"\n";
+		return 25;
+	}
+
+	return 0;
+}
+
+#endif
 
 /*
  * (c) 2002 Avery Lee
