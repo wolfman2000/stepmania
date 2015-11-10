@@ -8,11 +8,11 @@
 #include <string.h>
 #include <ctype.h>
 
-#if 0
+int constexpr MAX_FNAMBUF{ 0x0FFFFFFF };
+int constexpr MAX_SEGMENTS{ 64 };
+int constexpr MAX_GROUPS{ 64 };
 
-#define MAX_FNAMBUF		(0x0FFFFFFF)
-#define MAX_SEGMENTS	(64)
-#define MAX_GROUPS		(64)
+#if 0
 
 struct RVAEnt {
 	long rva;
@@ -304,12 +304,21 @@ int main(int argc, char **argv) {
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <tuple>
 
 class MapConverter
 {
 public:
-	MapConverter(std::string const &map, std::string const &vdi): mapFile{map, std::ios::in}, vdiFile{vdi, std::ios::out | std::ios::binary}
+	MapConverter(std::string const &map, std::string const &vdi): 
+		mapFile{map, std::ios::in}, vdiFile{vdi, std::ios::out | std::ios::binary},
+		mapLine{}, codeSegFlags{ 0 }, segBuf{ }
 	{}
+
+	~MapConverter()
+	{
+		mapFile.close();
+		vdiFile.close();
+	}
 
 	bool CanRead() const
 	{
@@ -320,10 +329,70 @@ public:
 	{
 		return vdiFile.good();
 	}
+	void ReadSegmentList()
+	{
+		if (!TryFindLine("Start         Length"))
+		{
+			throw "Cannot find the segment list!";
+		}
 
+		long grp{ 0 };
+		long start{ 0 };
+		long len{ 0 };
+		while (TryReadLine())
+		{
+			if (3 != std::sscanf(mapLine.c_str(), "%lx:%lx %lx", &grp, &start, &len))
+			{
+				break;
+			}
+
+			if (mapLine.find("CODE", 49) != std::string::npos)
+			{
+				codeSegFlags |= 1 << grp;
+				// Consider a class or struct here.
+				segBuf.push_back(std::make_tuple(start, len, grp));
+			}
+		}
+	}
+	void ReadPublicSymbols()
+	{
+		if (!TryFindLine("Publics by Value"))
+		{
+			throw "Cannot find the public symbol list!";
+		}
+
+		long grp{ 0 };
+		long start{ 0 };
+		long rva{ 0 };
+	}
 private:
+	bool TryReadLine()
+	{
+		if (mapFile.eof())
+		{
+			return false;
+		}
+		std::getline(mapFile, mapLine);
+		return true;
+	}
+	bool TryFindLine(std::string const &target)
+	{
+		while (TryReadLine())
+		{
+			if (mapLine.find(target) != std::string::npos)
+			{
+				return true;
+			}
+		}
+		// no more left.
+		return false;
+	}
+
 	std::ifstream mapFile;
 	std::ofstream vdiFile;
+	std::string mutable mapLine;
+	long codeSegFlags;
+	std::vector<std::tuple<long, long, long>> segBuf;
 };
 
 int main(int argc, char **argv) {
@@ -348,6 +417,14 @@ int main(int argc, char **argv) {
 	{
 		std::cout << "Can't open output file \"" << argv[2] << "\"\n";
 		return 25;
+	}
+	try {
+		converter.ReadSegmentList();
+		converter.ReadPublicSymbols();
+	}
+	catch (std::string const &s)
+	{
+		std::cerr << argv[1] << ": " << s << std::endl;
 	}
 
 	return 0;
