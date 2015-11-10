@@ -2,22 +2,29 @@
 
 #include <vector>
 #include <algorithm>
+#include <string>
+#include <cctype>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 int constexpr MAX_FNAMBUF{ 0x0FFFFFFF };
 int constexpr MAX_SEGMENTS{ 64 };
 int constexpr MAX_GROUPS{ 64 };
 
-#if 0
-
 struct RVAEnt {
 	long rva;
-	char *line;
+	std::string line;
 };
+
+struct RVASorter {
+	bool operator()(RVAEnt const& e1, RVAEnt const& e2) {
+		return e1.rva < e2.rva;
+	}
+};
+
+#if 0
 
 std::vector<RVAEnt> rvabuf;
 
@@ -302,16 +309,16 @@ int main(int argc, char **argv) {
 #else
 
 #include <fstream>
-#include <string>
 #include <iostream>
 #include <tuple>
+#include <array>
 
 class MapConverter
 {
 public:
 	MapConverter(std::string const &map, std::string const &vdi): 
 		mapFile{map, std::ios::in}, vdiFile{vdi, std::ios::out | std::ios::binary},
-		mapLine{}, codeSegFlags{ 0 }, segBuf{ }
+		mapLine{}, codeSegFlags{ 0 }, segBuf{}, rvaBuffers{}, grpStarts{}
 	{}
 
 	~MapConverter()
@@ -364,8 +371,117 @@ public:
 		long grp{ 0 };
 		long start{ 0 };
 		long rva{ 0 };
+		char symbolName[2048];
+
+		while (TryReadLine())
+		{
+			if (4 != std::sscanf(mapLine.c_str(), "%lx:%lx %s %lx", &grp, &start, symbolName, &rva))
+			{
+				break;
+			}
+
+			if (!(codeSegFlags & (1 << grp)) && std::strcmp(symbolName, "___ImageBase"))
+			{
+				continue;
+			}
+
+			RVAEnt entry{ rva, mapLine };
+			rvaBuffers.push_back(entry);
+		}
+	}
+
+	void ReadStaticSymbols()
+	{
+		if (!TryFindLine("Static symbols"))
+		{
+			std::cout << "WARNING: No static symbols found!\n";
+			return;
+		}
+
+		TryReadLine(); // Blank line we don't care about.
+		long grp{ 0 };
+		long start{ 0 };
+		long rva{ 0 };
+		char symbolName[4096];
+		while (TryReadLine())
+		{
+			if (4 != std::sscanf(mapLine.c_str(), "%lx:%lx %s %lx", &grp, &start, symbolName, &rva))
+			{
+				break;
+			}
+			// TODO: Move this logic to a separate function.
+			if (!(codeSegFlags & (1 << grp)))
+			{
+				continue;
+			}
+
+			RVAEnt entry{ rva, mapLine };
+			rvaBuffers.push_back(entry);
+		}
+	}
+	void ProcessRvaEntries()
+	{
+		std::sort(rvaBuffers.begin(), rvaBuffers.end(), RVASorter());
+
+		long grp{ 0 };
+		long start{ 0 };
+		long rva{ 0 };
+		char symbolName[4096];
+
+		for (auto &item : rvaBuffers)
+		{
+			// Re-read the line data again.
+			std::sscanf(item.line.c_str(), "%lx:%lx %s %lx", &grp, &start, symbolName, &rva);
+
+			grpStarts[grp] = rva - start;
+		}
+	}
+
+	void WriteBinary()
+	{
+		std::string header = "symbolic debug information\r\n\x1A";
+		vdiFile.write(header.c_str(), header.size());
+		char constexpr nullByte{ '\0' };
+		for (int i{ 0 }; i < 34; ++i)
+		{
+			vdiFile.write(&nullByte, 1);
+		}
 	}
 private:
+	std::string RemoveAnonymousNamespace(std::string ns)
+	{
+		while (ns.find("@?A") != std::string::npos)
+		{
+			int skip{ 0 };
+			// already eliminated them all.
+			if (ns.size() < 13)
+			{
+				break;
+			}
+
+			for (int i{ 5 }; i < 13; ++i)
+			{
+				if (!std::isxdigit(ns[i]))
+				{
+					skip = 1;
+				}
+			}
+
+			if (ns[3] != '0' || ns[4] != 'x')
+			{
+				skip = 1;
+			}
+			if (skip)
+			{
+				ns = ns.substr(1);
+			}
+			else
+			{
+				ns = ns.substr(13);
+			}
+		}
+		return ns;
+	}
 	bool TryReadLine()
 	{
 		if (mapFile.eof())
@@ -393,6 +509,8 @@ private:
 	std::string mutable mapLine;
 	long codeSegFlags;
 	std::vector<std::tuple<long, long, long>> segBuf;
+	std::vector<RVAEnt> rvaBuffers;
+	std::array<long, MAX_GROUPS> grpStarts;
 };
 
 int main(int argc, char **argv) {
@@ -421,6 +539,8 @@ int main(int argc, char **argv) {
 	try {
 		converter.ReadSegmentList();
 		converter.ReadPublicSymbols();
+		converter.ReadStaticSymbols();
+		converter.WriteBinary();
 	}
 	catch (std::string const &s)
 	{
