@@ -208,7 +208,6 @@ elseif(APPLE)
     XCODE_ATTRIBUTE_INFOPLIST_PREPROCESSOR_DEFINITIONS[variant=RelWithDebInfo] "RELWITHDEBINFO"
     XCODE_ATTRIBUTE_INFOPLIST_PREFIX_HEADER "${SM_XCODE_DIR}/plistHelper.hpp"
     XCODE_ATTRIBUTE_GCC_PREFIX_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/archutils/Darwin/StepMania.pch"
-    XCODE_ATTRIBUTE_GCC_ENABLE_CPP_EXCEPTIONS "NO"
     XCODE_ATTRIBUTE_LIBRARY_SEARCH_PATHS "${SM_XCODE_DIR}/Libraries"
   )
 
@@ -449,6 +448,11 @@ elseif(APPLE)
       "${SM_FFMPEG_ROOT}/libavutil/libavutil.a"
     )
   endif()
+
+  if(SDL2_FOUND)
+    list(APPEND SMDATA_LINK_LIB ${SDL2_LIBRARY})
+    sm_add_compile_definition("${SM_EXE_NAME}" HAVE_SDL)
+  endif()
 else() # Unix / Linux
   # TODO: Remember to find and locate the zip archive files.
   list(FIND SMDATA_LINK_LIB "jpeg" JPEG_INDEX)
@@ -625,6 +629,12 @@ else()
       "${SM_FFMPEG_ROOT}"
     )
   endif()
+endif()
+
+if (WITH_SDL)
+  list(APPEND SM_INCLUDE_DIRS
+    ${SDL2_INCLUDE_DIR}
+  )
 endif()
 
 if(WIN32)
