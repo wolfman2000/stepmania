@@ -8,10 +8,12 @@ if(APPLE)
     "archutils/Darwin/KeyboardDevice.cpp"
     "archutils/Darwin/MouseDevice.cpp"
     "archutils/Darwin/PumpDevice.cpp"
-    "archutils/Darwin/SMMain.mm"
     "archutils/Darwin/SpecialDirs.cpp"
     "archutils/Darwin/VectorHelper.cpp"
   )
+  if (NOT SDL2_FOUND)
+    list(APPEND SMDATA_OS_DARWIN_SRC "archutils/Darwin/SMMain.mm")
+  endif()
   list(APPEND SMDATA_OS_DARWIN_HPP
     "archutils/Darwin/arch_setup.h"
     "archutils/Darwin/Backtrace.hpp"

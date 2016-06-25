@@ -14,6 +14,10 @@
 /** @brief This macro is for INT64_C, etc. */
 #define __STDC_CONSTANT_MACROS
 
+#if defined(HAVE_SDL)
+#include <SDL.h>
+#endif
+
 /* Platform-specific fixes. */
 #if defined(WIN32)
 #include "archutils/Win32/arch_setup.h"

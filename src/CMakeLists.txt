@@ -55,7 +55,7 @@ list(APPEND SMDATA_ALL_FILES_HPP
   ${SMDATA_FILE_TYPES_HPP}
 )
 
-if(NOT APPLE)
+if(SDL2_FOUND OR NOT APPLE)
   list(APPEND SMDATA_ALL_FILES_SRC "Main.cpp")
   source_group("" FILES "Main.cpp")
 endif()

@@ -28,16 +28,10 @@ static SDL_GLContext g_Context;
 static LocalizedString FAILED_WINDOW_SDL( "LowLevelWindow_SDL", "Failed to create an SDL window" );
 LowLevelWindow_SDL::LowLevelWindow_SDL()
 {
-    if ( SDL_Init(SDL_INIT_VIDEO) != 0)
-         RageException::Throw( "SDL Error in %s: %s",__FUNCTION__, SDL_GetError());
-
-    //SDL_GetDesktopDisplayMode(1, &g_DisplayMode);
-
 }
 
 LowLevelWindow_SDL::~LowLevelWindow_SDL()
 {
-    SDL_Quit(); // Shutting down SDL properly (will restore resolution automatically
 }
 
 int LowLevelWindow_SDL::GetSDLDisplayNum( const std::string displayId ) const

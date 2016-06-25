@@ -1,8 +1,20 @@
 #include "global.h"
 #include "StepMania.h"
+#include <iostream>
 
 int main(int argc, char* argv[]) {
-	return sm_main(argc, argv);
+#if defined(HAVE_SDL)
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	{
+		std::cout << "SDL Error in " << __FUNCTION__ << ": " << SDL_GetError() << std::endl;
+		return -1;
+	}
+#endif
+	int finalResult = sm_main(argc, argv);
+#if defined(HAVE_SDL)
+	SDL_Quit();
+#endif
+	return finalResult;
 }
 
 /*
